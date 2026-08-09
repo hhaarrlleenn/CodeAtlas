@@ -4,6 +4,8 @@ CodeAtlas is a full-stack developer tool that converts API specifications and da
 
 It helps developers understand complex backend structures by automatically parsing API and SQL files and representing their relationships visually.
 
+[**Open CodeAtlas →**](https://codeatlas-fe.onrender.com)
+
 ## Features
 
 - Upload API specification files
