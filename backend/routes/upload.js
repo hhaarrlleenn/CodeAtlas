@@ -21,26 +21,43 @@ router.post(
     console.log("========== Files Received ==========");
     console.log(req.files);
 
+    // ============================
     // Parse OpenAPI
+    // ============================
     const openApiFile = req.files.openapi[0].path;
     const endpoints = parseOpenAPI(openApiFile);
 
     console.log("\n========== Extracted Endpoints ==========");
     console.log(endpoints);
 
+    // ============================
     // Parse SQL
+    // ============================
     const sqlFile = req.files.sql[0].path;
-    const tables = parseSQL(sqlFile);
+
+    const sqlData = parseSQL(sqlFile);
 
     console.log("\n========== Extracted Tables ==========");
-    console.log(tables);
+    console.log(sqlData.tables);
 
-    // Generate graph
-    const graph = generateGraph(endpoints, tables);
+    console.log("\n========== Extracted Relationships ==========");
+    console.log(sqlData.relationships);
+
+    // ============================
+    // Generate Graph
+    // ============================
+    const graph = generateGraph(
+      endpoints,
+      sqlData.tables,
+      sqlData.relationships
+    );
 
     console.log("\n========== Graph ==========");
     console.log(graph);
 
+    // ============================
+    // Send Response
+    // ============================
     res.json({
       message: "Files uploaded successfully!",
       graph,

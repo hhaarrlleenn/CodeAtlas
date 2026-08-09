@@ -1,4 +1,4 @@
-function generateGraph(endpoints, tables) {
+function generateGraph(endpoints, tables, relationships = []) {
   const nodes = [];
   const edges = [];
 
@@ -26,6 +26,7 @@ function generateGraph(endpoints, tables) {
         " Service";
     }
 
+    // Create service only once
     if (!services[serviceName]) {
       services[serviceName] = true;
 
@@ -35,9 +36,11 @@ function generateGraph(endpoints, tables) {
       });
     }
 
+    // API → Service
     edges.push({
       source: apiId,
       target: serviceName,
+      type: "smoothstep",
     });
   });
 
@@ -48,9 +51,10 @@ function generateGraph(endpoints, tables) {
     nodes.push({
       id: table.name,
       type: "database",
-      columns: table.columns, // ⭐ Save columns for later
+      columns: table.columns || [],
     });
 
+    // Connect table to matching service
     const serviceName =
       table.name.charAt(0).toUpperCase() +
       table.name.slice(1) +
@@ -60,13 +64,77 @@ function generateGraph(endpoints, tables) {
       edges.push({
         source: serviceName,
         target: table.name,
+        type: "smoothstep",
       });
     }
   });
 
+  // ============================
+  // Create Database Relationships
+  // ============================
+  relationships.forEach((relationship) => {
+    if (
+      !relationship.source ||
+      !relationship.target
+    ) {
+      return;
+    }
+
+    // Make sure both tables actually exist
+    const sourceTable = tables.find(
+      (table) => table.name === relationship.source
+    );
+
+    const targetTable = tables.find(
+      (table) => table.name === relationship.target
+    );
+
+    if (!sourceTable || !targetTable) {
+      return;
+    }
+
+    edges.push({
+      id: `fk-${relationship.source}-${relationship.sourceColumn}-${relationship.target}-${relationship.targetColumn}`,
+      source: relationship.source,
+      target: relationship.target,
+      type: "smoothstep",
+      label:
+        relationship.sourceColumn && relationship.targetColumn
+          ? `${relationship.sourceColumn} → ${relationship.targetColumn}`
+          : "FOREIGN KEY",
+      animated: false,
+    });
+  });
+
+  // ============================
+  // Remove Duplicate Nodes
+  // ============================
+  const uniqueNodes = Array.from(
+    new Map(nodes.map((node) => [node.id, node])).values()
+  );
+
+  // ============================
+  // Remove Duplicate Edges
+  // ============================
+  const uniqueEdges = Array.from(
+    new Map(
+      edges.map((edge) => [
+        `${edge.source}-${edge.target}-${edge.label || ""}`,
+        edge,
+      ])
+    ).values()
+  );
+
+  // ============================
+  // Debug Logs
+  // ============================
+  console.log("Generated Nodes:", uniqueNodes);
+  console.log("Generated Edges:", uniqueEdges);
+  console.log("Database Relationships:", relationships);
+
   return {
-    nodes,
-    edges,
+    nodes: uniqueNodes,
+    edges: uniqueEdges,
   };
 }
 
