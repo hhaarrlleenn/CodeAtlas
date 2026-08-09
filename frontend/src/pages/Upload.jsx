@@ -16,7 +16,7 @@ function Upload() {
     formData.append("sql", sqlFile);
 
     try {
-      const response = await fetch("http://localhost:8000/upload", {
+      const response = await fetch("https://codeatlas-6c88.onrender.com/upload", {
         method: "POST",
         body: formData,
       });
