@@ -232,7 +232,7 @@ function Home() {
       <div className="space-y-5">
 
         <a
-          href="https://github.com/your-github-username"
+          href="https://github.com/hhaarrlleenn/CodeAtlas"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-4 text-gray-400 hover:text-white transition"
@@ -242,9 +242,9 @@ function Home() {
         </a>
 
         <a
-          href="mailto:your@email.com"
-          className="flex items-center gap-4 text-gray-400 hover:text-white transition"
-        >
+  href="mailto:kourharleen248@gmail.com"
+  className="flex items-center gap-4 text-gray-400 hover:text-white transition"
+>
           <MdEmail className="text-3xl" />
           <span className="text-2xl">Email</span>
         </a>
