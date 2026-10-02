@@ -241,13 +241,15 @@ function Home() {
           <span className="text-2xl">GitHub</span>
         </a>
 
-        <a
-  href="mailto:kourharleen248@gmail.com"
+       <a
+  href="https://mail.google.com/mail/?view=cm&fs=1&to=kourharleen248@gmail.com"
+  target="_blank"
+  rel="noopener noreferrer"
   className="flex items-center gap-4 text-gray-400 hover:text-white transition"
 >
-          <MdEmail className="text-3xl" />
-          <span className="text-2xl">Email</span>
-        </a>
+  <MdEmail className="text-3xl" />
+  <span className="text-2xl">Email</span>
+</a>
 
       </div>
     </div>
